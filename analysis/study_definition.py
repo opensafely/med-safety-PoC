@@ -98,4 +98,37 @@ study = StudyDefinition(
         oral_nsaid
         """,
     ),
+
+    # GIB01 / admission indicator --------------------------------- #
+    # Patients 65 years or over admitted to hospital with a
+    # gastro-intestinal bleed and currently prescribed an NSAID and
+    # NOT concurrently prescribed a gastro-protective medicine.
+
+    # !!! TO COMPLETE FOLLOWING CODELIST DEFINITION !!! 
+
+    # gi_admission=patients.with_these_clinical_events(
+    #     codelists=gi_admission_codelist,
+    #     find_last_match_in_period = True,
+    #     returning="binary_flag",
+    #     between=["index_date - 3 months", "index_date"],
+    # )
+
+    # indicator_GIB01_admission_numerator = patients.satisfying(
+    #     """
+    #     (NOT ppi) AND
+    #     (age >=65 AND age <=120) AND
+    #     oral_nsaid AND
+    #     gi_admission
+    #     """
+    # )
+
+    # indicator_GIB01_risk_numerator=patients.satisfying(
+    #     """
+    #     (NOT ppi) AND
+    #     (age >=65 AND age <=120) AND
+    #     oral_nsaid
+    #     """,
+    # ),
+
+
 )
