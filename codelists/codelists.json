@@ -1,3 +1,16 @@
 {
-  "files": {}
+  "files": {
+    "pincer-nsaid.csv": {
+      "id": "pincer/nsaid/23edd06e",
+      "url": "https://codelists.opensafely.org/codelist/pincer/nsaid/23edd06e/",
+      "downloaded_at": "2021-10-25 10:55:05.060692Z",
+      "sha": "36655feddbfcbf9ec475d6c31e87bf19230a0236"
+    },
+    "pincer-ppi.csv": {
+      "id": "pincer/ppi/3cfd43a3",
+      "url": "https://codelists.opensafely.org/codelist/pincer/ppi/3cfd43a3/",
+      "downloaded_at": "2021-10-25 10:55:05.493996Z",
+      "sha": "c409d1521f097533c8df3462652deb671d8aa594"
+    }
+  }
 }
