@@ -89,14 +89,14 @@ study = StudyDefinition(
         codelist=oral_nsaid_codelist,
         find_first_match_in_period=True,
         returning="binary_flag",
-        between=["index_date", "index_date + 1 month"],
+        between=["index_date - 3 months", "index_date"],
     ),
 
     ppi=patients.with_these_medications(
         codelist=ulcer_healing_drugs_codelist,
         find_first_match_in_period=True,
         returning="binary_flag",
-        between=["index_date", "index_date + 1 month"],
+        between=["index_date - 3 months", "index_date"],
     ),
 
     indicator_GIB01_risk_denominator=patients.satisfying(
@@ -119,31 +119,27 @@ study = StudyDefinition(
     # gastro-intestinal bleed and currently prescribed an NSAID and
     # NOT concurrently prescribed a gastro-protective medicine.
 
-    gi_admission_discharged_date=patients.admitted_to_hospital(
-        with_these_diagnoses=gi_admissions_codelist,
+    # NB all data in OpenSafely are completed spells so we do not
+    # need to request episodes that are completed.
+
+    indicator_GIB01_admission_count=patients.admitted_to_hospital(
+        with_these_primary_diagnoses=gi_admissions_codelist,
         with_admission_method=emergency_admission_codes,
-        returning="date_discharged",
-        between=["index_date", "index_date + 3 months"],
-        date_format="YYYY-MM-DD",
-        find_first_match_in_period=True,
+        returning="number_of_matches_in_period",
+        between=["index_date - 3 months", "index_date"],
         return_expectations={
-            "date": {"earliest": start_date, "latest": end_date},
-            "incidence": 0.05,
+            "incidence": 0.6,
+            "int": {"distribution": "normal", "mean": 8, "stddev": 2},
         },
     ),
 
     indicator_GIB01_admission_numerator = patients.satisfying(
         """
         indicator_GIB01_risk_numerator AND
-        gi_admission_discharged_date
+        ( indicator_GIB01_admission_count > 0 )
         """
     ),
 
-    indicator_GIB01_admission_denominator=patients.satisfying(
-        """
-        indicator_GIB01_risk_numerator
-        """,
-    ),
 
     # AKI01 ======================================================= #
 
@@ -184,30 +180,22 @@ study = StudyDefinition(
     # kidney injury prescribed a non-steroidal anti-inflammatory drug
     # (NSAID), a reninangiotensin system(RAS) drug and a diuretic
 
-    aki_admission_discharged_date=patients.admitted_to_hospital(
-        with_these_diagnoses=aki_admissions_codelist,
+    indicator_AKI01_admission_count=patients.admitted_to_hospital(
+        with_these_primary_diagnoses=aki_admissions_codelist,
         with_admission_method=emergency_admission_codes,
-        returning="date_discharged",
+        returning="number_of_matches_in_period",
         between=["index_date - 3 months", "index_date"],
-        date_format="YYYY-MM-DD",
-        find_first_match_in_period=True,
         return_expectations={
-            "date": {"earliest": start_date, "latest": end_date},
-            "incidence": 0.05,
+            "incidence": 0.6,
+            "int": {"distribution": "normal", "mean": 8, "stddev": 2},
         },
     ),
 
     indicator_AKI01_admission_numerator=patients.satisfying(
         """
         indicator_AKI01_risk_numerator AND
-        aki_admission_discharged_date
+        ( indicator_AKI01_admission_count > 0 )
         """
-    ),
-
-    indicator_AKI01_admission_denominator=patients.satisfying(
-        """
-        indicator_AKI01_risk_numerator
-        """,
     ),
 
     # PAIN01 ======================================================= #
@@ -251,30 +239,22 @@ study = StudyDefinition(
     # concurrently prescribed an oral or transdermal opioid and a
     # benzodiazepine, Z-drug, pregabalin or gabapentin.
 
-    sedative_effect_admission_discharged_date=patients.admitted_to_hospital(
-        with_these_diagnoses=sedative_effect_admissions_codelist,
+    indicator_PAIN01_admission_count=patients.admitted_to_hospital(
+        with_these_primary_diagnoses=sedative_effect_admissions_codelist,
         with_admission_method=emergency_admission_codes,
-        returning="date_discharged",
+        returning="number_of_matches_in_period",
         between=["index_date - 3 months", "index_date"],
-        date_format="YYYY-MM-DD",
-        find_first_match_in_period=True,
         return_expectations={
-            "date": {"earliest": start_date, "latest": end_date},
-            "incidence": 0.05,
+            "incidence": 0.6,
+            "int": {"distribution": "normal", "mean": 8, "stddev": 2},
         },
     ),
 
     indicator_PAIN01_admission_numerator=patients.satisfying(
         """
         indicator_PAIN01_risk_numerator AND
-        sedative_effect_admission_discharged_date
+        ( indicator_PAIN01_admission_count > 0 )
         """
-    ),
-
-    indicator_PAIN01_admission_denominator=patients.satisfying(
-        """
-        indicator_PAIN01_risk_numerator
-        """,
     ),
 
 
