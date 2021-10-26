@@ -33,3 +33,13 @@ ras_drugs_codelist = codelist_from_csv("codelists/pincer-nsaid.csv",
 diuretics_codelist = codelist_from_csv("codelists/pincer-nsaid.csv",
                                             system="snomed",
                                             column="id",)
+
+opioid_codelist = codelist_from_csv("codelists/pincer-nsaid.csv",
+                                    system="snomed",
+                                    column="id",)
+
+# benzodiazepine, Z-drug, pregabalin or gabapentin
+sedative_codelist = codelist_from_csv("codelists/pincer-nsaid.csv",
+                                      system="snomed",
+                                      column="id",)
+

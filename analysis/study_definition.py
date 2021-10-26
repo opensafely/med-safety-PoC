@@ -210,4 +210,39 @@ study = StudyDefinition(
         """,
     ),
 
+    # PAIN01 ======================================================= #
+
+    # PAIN01 / increased risk indicator ---------------------------- #
+    # Number of patients concurrently prescribed an oral or
+    # transdermal opioid and a benzodiazepine, Z-drug, pregabalin or
+    # gabapentin and therefore potentially at increased risk of
+    # admission to hospital for respiratory depression, overdose
+    # (accidental) or confusion.
+
+    opioid=patients.with_these_medications(
+        codelist=opioid_codelist,
+        find_last_match_in_period=True,
+        returning="binary_flag",
+        between=["index_date - 3 months", "index_date"],
+    ),
+
+    sedative=patients.with_these_medications(
+        codelist=sedative_codelist,
+        find_last_match_in_period=True,
+        returning="binary_flag",
+        between=["index_date - 3 months", "index_date"],
+    ),
+
+    indicator_PAIN01_risk_denominator=patients.satisfying(
+        """
+        opioid OR sedative
+        """,
+    ),
+
+    indicator_PAIN01_risk_numerator=patients.satisfying(
+        """
+        opioid AND sedative
+        """,
+    ),
+
 )
