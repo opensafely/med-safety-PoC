@@ -179,5 +179,35 @@ study = StudyDefinition(
         """,
     ),
 
+    # AKI01 / admissions indicator -------------------------------- #
+    # Patients 18 years old or over admitted to hospital with acute
+    # kidney injury prescribed a non-steroidal anti-inflammatory drug
+    # (NSAID), a reninangiotensin system(RAS) drug and a diuretic
+
+    aki_admission_discharged_date=patients.admitted_to_hospital(
+        with_these_diagnoses=aki_admissions_codelist,
+        with_admission_method=emergency_admission_codes,
+        returning="date_discharged",
+        between=["index_date - 3 months", "index_date"],
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": start_date, "latest": end_date},
+            "incidence": 0.05,
+        },
+    ),
+
+    indicator_AKI01_admission_numerator=patients.satisfying(
+        """
+        indicator_AKI01_risk_numerator AND
+        aki_admission_discharged_date
+        """
+    ),
+
+    indicator_AKI01_admission_denominator=patients.satisfying(
+        """
+        indicator_AKI01_risk_numerator
+        """,
+    ),
 
 )
