@@ -11,6 +11,12 @@
       "url": "https://codelists.opensafely.org/codelist/pincer/ppi/3cfd43a3/",
       "downloaded_at": "2021-10-25 10:55:05.493996Z",
       "sha": "c409d1521f097533c8df3462652deb671d8aa594"
+    },
+    "opensafely-acute-transverse-myelitis-icd-10-323243cb.csv": {
+      "id": "opensafely/acute-transverse-myelitis-icd-10/323243cb/",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/acute-transverse-myelitis-icd-10/323243cb//",
+      "downloaded_at": "2021-10-26 10:29:46.514481Z",
+      "sha": "5c5f1a185607e93d2c84a9259a2fa92775e9d4cc"
     }
   }
 }
