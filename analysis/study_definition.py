@@ -145,6 +145,39 @@ study = StudyDefinition(
     #     """,
     # ),
 
+    # AKI01 ======================================================= #
+
+    # AKI01 / increased risk indicator ---------------------------- #
+    # Patients prescribed a non-steroidal anti-inflammatory drug
+    # (NSAID), a renin-angiotensin system (RAS) drug and a diuretic
+    # and therefore potentially at increased risk of admission to
+    # hospital with acute kidney injury(AKI)
+
+    ras=patients.with_these_medications(
+        codelist=ras_drugs_codelist,
+        find_last_match_in_period=True,
+        returning="binary_flag",
+        between=["index_date - 3 months", "index_date"],
+    ),
+
+    diuretic=patients.with_these_medications(
+        codelist=diuretics_codelist,
+        find_last_match_in_period=True,
+        returning="binary_flag",
+        between=["index_date - 3 months", "index_date"],
+    ),
+
+    indicator_AKI01_risk_denominator=patients.satisfying(
+        """
+        oral_nsaid OR ras OR diuretic
+        """,
+    ),
+
+    indicator_AKI01_risk_numerator=patients.satisfying(
+        """
+        oral_nsaid AND ras AND diuretic
+        """,
+    ),
 
 
 )
