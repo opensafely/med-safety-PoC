@@ -245,4 +245,38 @@ study = StudyDefinition(
         """,
     ),
 
+    # PAIN01 / admissions indicator -------------------------------- #
+    # Patients 18 years old or over admitted to hospital for
+    # respiratory depression, overdose (accidental) or confusion
+    # concurrently prescribed an oral or transdermal opioid and a
+    # benzodiazepine, Z-drug, pregabalin or gabapentin.
+
+    sedative_effect_admission_discharged_date=patients.admitted_to_hospital(
+        with_these_diagnoses=sedative_effect_admissions_codelist,
+        with_admission_method=emergency_admission_codes,
+        returning="date_discharged",
+        between=["index_date - 3 months", "index_date"],
+        date_format="YYYY-MM-DD",
+        find_first_match_in_period=True,
+        return_expectations={
+            "date": {"earliest": start_date, "latest": end_date},
+            "incidence": 0.05,
+        },
+    ),
+
+    indicator_PAIN01_admission_numerator=patients.satisfying(
+        """
+        indicator_PAIN01_risk_numerator AND
+        sedative_effect_admission_discharged_date
+        """
+    ),
+
+    indicator_PAIN01_admission_denominator=patients.satisfying(
+        """
+        indicator_PAIN01_risk_numerator
+        """,
+    ),
+
+
+
 )
