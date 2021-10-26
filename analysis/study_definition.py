@@ -5,6 +5,21 @@ from codelists import *
 start_date = "2019-09-01"
 end_date = "2021-07-01"
 
+emergency_admission_codes = [
+    "21",  # Emergency Admission: Emergency Care Department or dental casualty department of the Health Care Provider
+    "22",  # Emergency Admission: GENERAL PRACTITIONER: after a request for immediate admission has been made direct to a Hospital Provider, i.e. not through a Bed bureau, by a GENERAL PRACTITIONER or deputy
+    "23",  # Emergency Admission: Bed bureau
+    "24",  # Emergency Admission: Consultant Clinic, of this or another Health Care Provider
+    "25",  # Emergency Admission: Admission via Mental Health Crisis Resolution Team
+    "2A",  # Emergency Admission: Emergency Care Department of another provider where the PATIENT  had not been admitted
+    "2B",  # Emergency Admission: Transfer of an admitted PATIENT from another Hospital Provider in an emergency
+    "2D",  # Emergency Admission: Other emergency admission
+    "28"   # Emergency Admission: Other means, examples are:
+           # - admitted from the Emergency Care Department of another provider where they had not been admitted
+           # - transfer of an admitted PATIENT from another Hospital Provider in an emergency
+           # - baby born at home as intended
+    ]
+
 study = StudyDefinition(
     index_date=start_date,
 
@@ -106,15 +121,7 @@ study = StudyDefinition(
 
     gi_admission_discharged_date=patients.admitted_to_hospital(
         with_these_diagnoses=gi_admissions_codelist,
-        with_admission_method=["21",  # Emergency Admission: Emergency Care Department or dental casualty department of the Health Care Provider
-                               "22",  # Emergency Admission: GENERAL PRACTITIONER: after a request for immediate admission has been made direct to a Hospital Provider, i.e. not through a Bed bureau, by a GENERAL PRACTITIONER or deputy
-                               "23",  # Emergency Admission: Bed bureau
-                               "24",  # Emergency Admission: Consultant Clinic, of this or another Health Care Provider
-                               "25",  # Emergency Admission: Admission via Mental Health Crisis Resolution Team
-                               "2A",  # Emergency Admission: Emergency Care Department of another provider where the PATIENT  had not been admitted
-                               "2B",  # Emergency Admission: Transfer of an admitted PATIENT from another Hospital Provider in an emergency
-                               "2D",  # Emergency Admission: Other emergency admission
-                               "28"],
+        with_admission_method=emergency_admission_codes,
         returning="date_discharged",
         between=["index_date - 3 months", "index_date"],
         date_format="YYYY-MM-DD",
@@ -127,18 +134,14 @@ study = StudyDefinition(
 
     indicator_GIB01_admission_numerator = patients.satisfying(
         """
-        (NOT ppi) AND
-        (age >=65 AND age <=120) AND
-        oral_nsaid AND
+        indicator_GIB01_risk_numerator AND
         gi_admission_discharged_date
         """
     ),
 
     indicator_GIB01_admission_denominator=patients.satisfying(
         """
-        (NOT ppi) AND
-        (age >=65 AND age <=120) AND
-        oral_nsaid
+        indicator_GIB01_risk_numerator
         """,
     ),
 
