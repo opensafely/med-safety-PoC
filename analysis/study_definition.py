@@ -86,7 +86,7 @@ study = StudyDefinition(
     # admission to hospital with a GI bleed.
 
     oral_nsaid=patients.with_these_medications(
-        codelist=oral_nsaid_codelist,
+        codelist=oral_nsaid_drugs_codelist,
         find_first_match_in_period=True,
         returning="binary_flag",
         between=["index_date - 3 months", "index_date"],
@@ -123,7 +123,7 @@ study = StudyDefinition(
     # need to request episodes that are completed.
 
     indicator_GIB01_admission_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=gi_admissions_codelist,
+        with_these_primary_diagnoses=PLACEHOLDER_admissions_codelist,
         with_admission_method=emergency_admission_codes,
         returning="number_of_matches_in_period",
         between=["index_date - 3 months", "index_date"],
@@ -150,14 +150,14 @@ study = StudyDefinition(
     # hospital with acute kidney injury(AKI)
 
     ras=patients.with_these_medications(
-        codelist=ras_drugs_codelist,
+        codelist=PLACEHOLDER_drugs_codelist,
         find_last_match_in_period=True,
         returning="binary_flag",
         between=["index_date - 3 months", "index_date"],
     ),
 
     diuretic=patients.with_these_medications(
-        codelist=diuretics_codelist,
+        codelist=PLACEHOLDER_drugs_codelist,
         find_last_match_in_period=True,
         returning="binary_flag",
         between=["index_date - 3 months", "index_date"],
@@ -181,7 +181,7 @@ study = StudyDefinition(
     # (NSAID), a reninangiotensin system(RAS) drug and a diuretic
 
     indicator_AKI01_admission_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=aki_admissions_codelist,
+        with_these_primary_diagnoses=PLACEHOLDER_admissions_codelist,
         with_admission_method=emergency_admission_codes,
         returning="number_of_matches_in_period",
         between=["index_date - 3 months", "index_date"],
@@ -208,14 +208,14 @@ study = StudyDefinition(
     # (accidental) or confusion.
 
     opioid=patients.with_these_medications(
-        codelist=opioid_codelist,
+        codelist=PLACEHOLDER_drugs_codelist,
         find_last_match_in_period=True,
         returning="binary_flag",
         between=["index_date - 3 months", "index_date"],
     ),
 
     sedative=patients.with_these_medications(
-        codelist=sedative_codelist,
+        codelist=PLACEHOLDER_drugs_codelist,
         find_last_match_in_period=True,
         returning="binary_flag",
         between=["index_date - 3 months", "index_date"],
@@ -240,7 +240,7 @@ study = StudyDefinition(
     # benzodiazepine, Z-drug, pregabalin or gabapentin.
 
     indicator_PAIN01_admission_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=sedative_effect_admissions_codelist,
+        with_these_primary_diagnoses=PLACEHOLDER_admissions_codelist,
         with_admission_method=emergency_admission_codes,
         returning="number_of_matches_in_period",
         between=["index_date - 3 months", "index_date"],
