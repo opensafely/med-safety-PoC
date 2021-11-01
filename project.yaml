@@ -18,6 +18,28 @@ actions:
       variable_types:
           age: int
           sex: categorical
+          registered: categorical
+          died: categorical
+          practice: int
+          oral_nsaid: categorical
+          ppi: categorical
+          indicator_GIB01_risk_denominator: categorical
+          indicator_GIB01_risk_numerator: categorical
+          indicator_GIB01_admission_count: categorical
+          indicator_GIB01_admission_numerator: categorical
+          ras: categorical
+          diuretic: categorical
+          indicator_AKI01_risk_denominator: categorical
+          indicator_AKI01_risk_numerator: categorical
+          indicator_AKI01_admission_count: categorical
+          indicator_AKI01_admission_numerator: categorical
+          opioid: categorical
+          sedative: categorical
+          indicator_PAIN01_risk_denominator: categorical
+          indicator_PAIN01_risk_numerator: categorical
+          indicator_PAIN01_admission_count: categorical
+          indicator_PAIN01_admission_numerator: categorical
+          patient_id: int
       output_path: output/cohort_reports_outputs
     outputs:
       moderately_sensitive:
