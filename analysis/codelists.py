@@ -11,6 +11,12 @@ oral_nsaid_drugs_codelist = codelist_from_csv("codelists/pincer-nsaid.csv",
                                  system="snomed",
                                  column="id",)
 
+ethnicity_codes = codelist_from_csv(
+    "codelists/opensafely-ethnicity.csv",
+    system="ctv3",
+    column="Code",
+)
+
 #####################################################################
 ### PLACEHOLDER CODELISTS ###########################################
 #####################################################################

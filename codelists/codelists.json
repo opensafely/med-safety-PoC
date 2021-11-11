@@ -11,6 +11,12 @@
       "url": "https://codelists.opensafely.org/codelist/pincer/ppi/3cfd43a3/",
       "downloaded_at": "2021-10-25 10:55:05.493996Z",
       "sha": "c409d1521f097533c8df3462652deb671d8aa594"
+    },
+    "opensafely-ethnicity.csv": {
+      "id": "opensafely/ethnicity/2020-04-27",
+      "url": "https://codelists.opensafely.org/codelist/opensafely/ethnicity/2020-04-27/",
+      "downloaded_at": "2021-11-11 17:31:21.494491Z",
+      "sha": "3d2f3998b71863a80b24d60f6f4282e14191ae13"
     }
   }
 }
