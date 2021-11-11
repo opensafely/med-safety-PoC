@@ -1,7 +1,7 @@
 version: '3.0'
 
 expectations:
-  population_size: 1000
+  population_size: 500
 
 actions:
 
@@ -10,6 +10,18 @@ actions:
     outputs:
       highly_sensitive:
         cohort: output/ce1/input_*.feather
+
+  # generate_study_population_ce2:
+  #   run: cohortextractor-v2:latest generate_cohort --cohort-definition analysis/study_definition_ce2.py --output output/ce2/input_cohort.csv #--dummy-data-file analysis/dummy_data.csv
+  #   outputs:
+  #     highly_sensitive:
+  #       cohort: output/ce2/input_cohort.csv
+
+  validate_cohort_v2:
+    run: cohortextractor-v2:latest validate_cohort tpp --cohort-definition analysis/study_definition_ce2.py --output output/ce2/generated_sql.csv
+    outputs:
+      moderately_sensitive:
+        cohort: output/ce2/generated_sql.csv
 
   # generate_report:
   #   run: cohort-report:v2.0.2 output/ce1/input_2019-09-01.feather
