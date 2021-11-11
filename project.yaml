@@ -6,41 +6,16 @@ expectations:
 actions:
 
   generate_study_population:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition --index-date-range "2019-09-01 to 2020-09-01 by month" #--output-format feather
+    run: cohortextractor:latest generate_cohort --study-definition study_definition --index-date-range "2019-09-01 to 2020-09-01 by month" --output-format feather
     outputs:
       highly_sensitive:
-        cohort: output/input_*.csv
+        cohort: output/input_*.feather
 
   generate_report:
-    run: cohort-report:v2.0.2 output/input_2019-09-01.csv
+    run: cohort-report:v2.0.2 output/input_2019-09-01.feather
     needs: [generate_study_population]
     config:
-      variable_types:
-          age: int
-          sex: categorical
-          registered: categorical
-          died: categorical
-          practice: int
-          oral_nsaid: categorical
-          ppi: categorical
-          indicator_GIB01_risk_denominator: categorical
-          indicator_GIB01_risk_numerator: categorical
-          indicator_GIB01_admission_count: categorical
-          indicator_GIB01_admission_numerator: categorical
-          ras: categorical
-          diuretic: categorical
-          indicator_AKI01_risk_denominator: categorical
-          indicator_AKI01_risk_numerator: categorical
-          indicator_AKI01_admission_count: categorical
-          indicator_AKI01_admission_numerator: categorical
-          opioid: categorical
-          sedative: categorical
-          indicator_PAIN01_risk_denominator: categorical
-          indicator_PAIN01_risk_numerator: categorical
-          indicator_PAIN01_admission_count: categorical
-          indicator_PAIN01_admission_numerator: categorical
-          patient_id: int
       output_path: output/cohort_reports_outputs
     outputs:
       moderately_sensitive:
-        reports: output/cohort_reports_outputs/descriptives_input.html
+        reports: output/cohort_reports_outputs/*.html
