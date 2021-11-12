@@ -1,5 +1,5 @@
 from cohortextractor import table, codelist #, categorise
-# from codelists import *
+from codelists import *
 
 # Example study definitions for v2
 # https: // github.com/opensafely/SRO-Measures/blob/v2/analysis/study_definition.py
@@ -21,26 +21,41 @@ from cohortextractor import table, codelist #, categorise
 #                               - episode_is_finished (boolean)
 #                               - spell_id (integer)
 
+emergency_admission_codes = [
+    "21",  # Emergency Admission: Emergency Care Department or dental casualty department of the Health Care Provider
+    "22",  # Emergency Admission: GENERAL PRACTITIONER: after a request for immediate admission has been made direct to a Hospital Provider, i.e. not through a Bed bureau, by a GENERAL PRACTITIONER or deputy
+    "23",  # Emergency Admission: Bed bureau
+    "24",  # Emergency Admission: Consultant Clinic, of this or another Health Care Provider
+    "25",  # Emergency Admission: Admission via Mental Health Crisis Resolution Team
+    "2A",  # Emergency Admission: Emergency Care Department of another provider where the PATIENT  had not been admitted
+    "2B",  # Emergency Admission: Transfer of an admitted PATIENT from another Hospital Provider in an emergency
+    "2D",  # Emergency Admission: Other emergency admission
+    "28"   # Emergency Admission: Other means, examples are:
+           # - admitted from the Emergency Care Department of another provider where they had not been admitted
+           # - transfer of an admitted PATIENT from another Hospital Provider in an emergency
+           # - baby born at home as intended
+]
+
+emergency_admission_codes_integers = [21, 22, 23, 24, 25, 28]
 
 
 class Cohort:
     population = table("patients").exists()
-    # dob = table("patients").first_by("patient_id").get("date_of_birth")
-    # age = table("patients").age_as_of("2020-01-01")
+    dob = table("patients").first_by("patient_id").get("date_of_birth")
+    age = table("patients").age_as_of("2020-01-01")
 
-    # prescribed_med = (
-    #     table("prescriptions")
-    #     .filter("processing_date", between=["2020-01-01", "2020-01-31"])
-    #     .filter(
-    #         "prescribed_dmd_code", is_in=codelist(["0010", "0050"], system="dmd")
-    #     )
-    #     .exists()
-    # )
+    oral_nsaid = (
+        table("prescriptions")
+        .filter("processing_date", between=["2020-01-01", "2020-01-31"])
+        .filter("prescribed_dmd_code", is_in=oral_nsaid_drugs_codelist )
+        .exists()
+    )
 
-    # admitted = (
-    #     table("hospital_admissions")
-    #     .filter("admission_date", between=["2020-01-01", "2020-01-31"])
-    #     .filter(primary_diagnosis="N05", episode_is_finished=True)
-    #     .filter("admission_method", between=[20, 29])
-    #     .exists()
-    # )
+    GIB_admission = (
+        table("hospital_admissions")
+        .filter("admission_date", between=["2020-01-01", "2020-01-31"])
+        .filter("primary_diagnosis", is_in=PLACEHOLDER_admissions_codelist )
+        .filter(episode_is_finished=True)
+        .filter("admission_method", is_in=emergency_admission_codes_integers)
+        .exists()
+    )
