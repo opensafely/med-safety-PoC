@@ -123,7 +123,7 @@ study = StudyDefinition(
     # need to request episodes that are completed.
 
     indicator_GIB01_admission_count=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=PLACEHOLDER_admissions_codelist,
+        with_these_primary_diagnoses=GIB_admissions_codelist,
         with_admission_method=emergency_admission_codes,
         returning="number_of_matches_in_period",
         between=["index_date - 3 months", "index_date"],
