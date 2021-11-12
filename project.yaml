@@ -18,7 +18,7 @@ actions:
   #       cohort: output/ce2/input_cohort.csv
 
   validate_cohort_v2:
-    run: cohortextractor-v2:latest validate_cohort tpp --cohort-definition analysis/study_definition_ce2.py --output output/ce2/generated_sql.csv
+    run: cohortextractor-v2:latest validate_cohort databricks --cohort-definition analysis/study_definition_ce2.py --output output/ce2/generated_sql.csv
     outputs:
       moderately_sensitive:
         cohort: output/ce2/generated_sql.csv
