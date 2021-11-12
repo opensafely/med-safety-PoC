@@ -6,8 +6,22 @@ from cohortextractor import table, codelist #, categorise
 # --> graphnet backend example
 # https: // github.com/opensafely/long-covid/blob/simplified-for-ce2/analysis/study_definition_cohort_v2.py
 # --> TPP backend example
+
 # https://github.com/opensafely-core/cohort-extractor-v2/blob/18a92af5fbf5ccc31725279cb087788fa2c98209/tests/backends/test_databricks.py#L87-L94
 # --> testing for databricks backend (includes prescription query)
+
+# https://github.com/opensafely-core/cohort-extractor-v2/blob/main/cohortextractor/backends/databricks.py
+# table( "patients"      ) - date_of_birth (date)
+# table( "prescriptions" ) - patient_id (integer)
+#                          - prescribed_dmd_code (dmd)
+#                          - processing_date (date)
+# table( "hospital_admissions ) - admission_date (date)
+#                               - primary_diagnosis (icd10)
+#                               - admission_method (integer)
+#                               - episode_is_finished (boolean)
+#                               - spell_id (integer)
+
+
 
 class Cohort:
     population = table("patients").exists()
