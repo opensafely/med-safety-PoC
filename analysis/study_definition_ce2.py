@@ -1,6 +1,8 @@
-from cohortextractor import table, cohort_date_range, codelist #, categorise
+from cohortextractor import table, cohort_date_range, Measure, codelist #, categorise
 from codelists import *
 from utilities import add_months
+import re
+import pandas as pd
 
 # Example study definitions for v2
 # https://github.com/opensafely/SRO-Measures/blob/v2/analysis/study_definition.py
@@ -39,10 +41,8 @@ emergency_admission_codes = (
 
 
 index_date_range = cohort_date_range(
-    start="2020-01-01", end="2020-12-01", increment="month"
+    start="2020-01-01", end="2020-03-01", increment="month"
 )
-
-index_date = "2020-01-01"
 
 def cohort(index_date):
     three_months_previous = add_months( index_date, -3 )
@@ -100,6 +100,50 @@ def cohort(index_date):
             .exists()
         )
         
-        indicator_GIB01_admission_numerator = _age_65_plus and GIB_admission and indicator_GIB01_risk_numerator
+        indicator_GIB01_admission_numerator = GIB_admission and indicator_GIB01_risk_numerator
+        indicator_GIB01_admission_denominator = indicator_GIB01_risk_numerator
+
+        measures = []
+
+    ### Identifying all indicators ================================ #
+
+    ### This will identify all attributes of the class Cohort that
+    ### match the indicator_regex defined below, and save this to
+    ### indicator_variables
+    indicator_regex = re.compile("^indicator_.*")
+    indicator_variables = list( filter(indicator_regex.match, Cohort.__dict__.keys() ))
+
+    ### This will take these indicator variables and make a dataframe
+    ### which will identify numerator/denominator variables pairs
+    ### for each indicator; could incorporate a check here to only
+    ### look at those indicators that have a numerator AND denominator
+    ### defined above.
+    indicator_df = pd.DataFrame( data={'v': indicator_variables} )
+    indicator_df['name'] = indicator_df['v'].map(lambda x: re.sub("_(numerator|denominator)", "", x ))
+    indicator_df['type'] = indicator_df.apply(lambda x: x['v'].replace(f"{x['name']}_", ''), axis=1)
+
+    print( f"Month {index_date}: creating indicator '{set(indicator_df.name)}'" )
+
+    ### This loops through all indicators identified in the process above
+    ### and creates the measure from the numerator and denominator
+    ### which is (currently) grouped by practice.
+    for this_indicator in set(indicator_df.name):
+        this_numerator = ( indicator_df
+                            .query( f"name == '{this_indicator}'" )
+                            .query( f"type == 'numerator'") ).v.str
+        this_denominator = ( indicator_df
+                            .query( f"name == '{this_indicator}'" )
+                            .query( f"type == 'denominator'") ).v.str
+        this_rate = f"{this_indicator}_rate"
+
+        Cohort.measures.extend( [
+            Measure(
+                id=this_rate,
+                numerator=this_numerator,
+                denominator=this_denominator,
+                group_by=["practice"],
+            ),
+        ]
+    )
 
     return Cohort
