@@ -18,10 +18,10 @@ actions:
   #       cohort: output/ce2/input_cohort.csv
 
   validate_cohort_v2:
-    run: cohortextractor-v2:latest validate_cohort databricks --cohort-definition analysis/study_definition_ce2.py --output output/ce2/generated_sql.csv
+    run: cohortextractor-v2:latest validate_cohort databricks --cohort-definition analysis/study_definition_ce2.py --output output/ce2/generated_sql_*.csv
     outputs:
       moderately_sensitive:
-        cohort: output/ce2/generated_sql.csv
+        cohort: output/ce2/generated_sql_*.csv
 
   validate_test:
     run: cohortextractor-v2:latest validate_cohort databricks --cohort-definition analysis/test_date_range.py --output output/ce2/generated_test_sql.csv
