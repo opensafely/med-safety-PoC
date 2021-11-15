@@ -1,10 +1,11 @@
-from cohortextractor import table, codelist #, categorise
+from cohortextractor import table, cohort_date_range, codelist #, categorise
 from codelists import *
+from utilities import add_months
 
 # Example study definitions for v2
-# https: // github.com/opensafely/SRO-Measures/blob/v2/analysis/study_definition.py
+# https://github.com/opensafely/SRO-Measures/blob/v2/analysis/study_definition.py
 # --> graphnet backend example
-# https: // github.com/opensafely/long-covid/blob/simplified-for-ce2/analysis/study_definition_cohort_v2.py
+# https://github.com/opensafely/long-covid/blob/simplified-for-ce2/analysis/study_definition_cohort_v2.py
 # --> TPP backend example
 
 # https://github.com/opensafely-core/cohort-extractor-v2/blob/18a92af5fbf5ccc31725279cb087788fa2c98209/tests/backends/test_databricks.py#L87-L94
@@ -37,10 +38,19 @@ emergency_admission_codes = (
 )
 
 
+index_date_range = cohort_date_range(
+    start="2020-01-01", end="2020-12-01", increment="month"
+)
+
+index_date = "2020-01-01"
+
+# def cohort(index_date):
+three_months_previous = add_months( index_date, -3 )
+
 class Cohort:
     population = table("patients").exists()
     dob = table("patients").first_by("patient_id").get("date_of_birth")
-    age = table("patients").age_as_of("2020-01-01")
+    age = table("patients").age_as_of(index_date)
 
     #################################################################
     ### GI BLEED INDICATORS                                       ###
@@ -58,14 +68,14 @@ class Cohort:
 
     oral_nsaid = (
         table("prescriptions")
-        .filter("processing_date", between=["2020-01-01", "2020-01-31"])
+        .filter("processing_date", between=[three_months_previous, index_date])
         .filter("prescribed_dmd_code", is_in=oral_nsaid_drugs_codelist )
         .exists()
     )
 
     ppi = (
         table("prescriptions")
-        .filter("processing_date", between=["2020-01-01", "2020-01-31"])
+        .filter("processing_date", between=[three_months_previous, index_date])
         .filter("prescribed_dmd_code", is_in=PLACEHOLDER_drugs_codelist)
         .exists()
     )
@@ -83,7 +93,7 @@ class Cohort:
 
     GIB_admission = (
         table("hospital_admissions")
-        .filter("admission_date", between=["2020-01-01", "2020-01-31"])
+        .filter("admission_date", between=[three_months_previous, index_date])
         .filter("primary_diagnosis", is_in=PLACEHOLDER_admissions_codelist )
         .filter(episode_is_finished=True)
         .filter("admission_method", is_in=emergency_admission_codes)
