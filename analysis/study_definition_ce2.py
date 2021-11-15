@@ -21,7 +21,7 @@ from codelists import *
 #                               - episode_is_finished (boolean)
 #                               - spell_id (integer)
 
-emergency_admission_codes = [
+emergency_admission_codes = (
     "21",  # Emergency Admission: Emergency Care Department or dental casualty department of the Health Care Provider
     "22",  # Emergency Admission: GENERAL PRACTITIONER: after a request for immediate admission has been made direct to a Hospital Provider, i.e. not through a Bed bureau, by a GENERAL PRACTITIONER or deputy
     "23",  # Emergency Admission: Bed bureau
@@ -34,9 +34,7 @@ emergency_admission_codes = [
            # - admitted from the Emergency Care Department of another provider where they had not been admitted
            # - transfer of an admitted PATIENT from another Hospital Provider in an emergency
            # - baby born at home as intended
-]
-
-emergency_admission_codes_integers = [21, 22, 23, 24, 25, 28]
+)
 
 
 class Cohort:
@@ -56,6 +54,6 @@ class Cohort:
         .filter("admission_date", between=["2020-01-01", "2020-01-31"])
         .filter("primary_diagnosis", is_in=PLACEHOLDER_admissions_codelist )
         .filter(episode_is_finished=True)
-        .filter("admission_method", is_in=emergency_admission_codes_integers)
+        .filter("admission_method", is_in=emergency_admission_codes)
         .exists()
     )
