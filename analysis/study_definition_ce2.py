@@ -42,12 +42,44 @@ class Cohort:
     dob = table("patients").first_by("patient_id").get("date_of_birth")
     age = table("patients").age_as_of("2020-01-01")
 
+    #################################################################
+    ### GI BLEED INDICATORS                                       ###
+    #################################################################
+
+    # GIB01 ======================================================= #
+
+    # GIB01 / increased risk indicator ---------------------------- #
+    # Patients aged 65 or over currently prescribed a non-steroidal
+    # anti-inflammatory drug (NSAID) without a gastro protective
+    # medicine and therefore potentially at increased risk of
+    # admission to hospital with a GI bleed.
+
+    _age_65_plus = age >= 65
+
     oral_nsaid = (
         table("prescriptions")
         .filter("processing_date", between=["2020-01-01", "2020-01-31"])
         .filter("prescribed_dmd_code", is_in=oral_nsaid_drugs_codelist )
         .exists()
     )
+
+    ppi = (
+        table("prescriptions")
+        .filter("processing_date", between=["2020-01-01", "2020-01-31"])
+        .filter("prescribed_dmd_code", is_in=PLACEHOLDER_drugs_codelist)
+        .exists()
+    )
+
+    indicator_GIB01_risk_denominator = _age_65_plus and oral_nsaid
+    indicator_GIB01_risk_numerator = _age_65_plus and oral_nsaid and ppi
+
+    # GIB01 / admission indicator --------------------------------- #
+    # Patients 65 years or over admitted to hospital with a
+    # gastro-intestinal bleed and currently prescribed an NSAID and
+    # NOT concurrently prescribed a gastro-protective medicine.
+
+    # NB all data in OpenSafely are completed spells so we do not
+    # need to request episodes that are completed.
 
     GIB_admission = (
         table("hospital_admissions")
@@ -57,3 +89,5 @@ class Cohort:
         .filter("admission_method", is_in=emergency_admission_codes)
         .exists()
     )
+    
+    indicator_GIB01_admission_numerator = _age_65_plus and GIB_admission and indicator_GIB01_risk_numerator
