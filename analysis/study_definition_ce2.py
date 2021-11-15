@@ -44,60 +44,62 @@ index_date_range = cohort_date_range(
 
 index_date = "2020-01-01"
 
-# def cohort(index_date):
-three_months_previous = add_months( index_date, -3 )
+def cohort(index_date):
+    three_months_previous = add_months( index_date, -3 )
 
-class Cohort:
-    population = table("patients").exists()
-    dob = table("patients").first_by("patient_id").get("date_of_birth")
-    age = table("patients").age_as_of(index_date)
+    class Cohort:
+        population = table("patients").exists()
+        dob = table("patients").first_by("patient_id").get("date_of_birth")
+        age = table("patients").age_as_of(index_date)
 
-    #################################################################
-    ### GI BLEED INDICATORS                                       ###
-    #################################################################
+        #################################################################
+        ### GI BLEED INDICATORS                                       ###
+        #################################################################
 
-    # GIB01 ======================================================= #
+        # GIB01 ======================================================= #
 
-    # GIB01 / increased risk indicator ---------------------------- #
-    # Patients aged 65 or over currently prescribed a non-steroidal
-    # anti-inflammatory drug (NSAID) without a gastro protective
-    # medicine and therefore potentially at increased risk of
-    # admission to hospital with a GI bleed.
+        # GIB01 / increased risk indicator ---------------------------- #
+        # Patients aged 65 or over currently prescribed a non-steroidal
+        # anti-inflammatory drug (NSAID) without a gastro protective
+        # medicine and therefore potentially at increased risk of
+        # admission to hospital with a GI bleed.
 
-    _age_65_plus = age >= 65
+        _age_65_plus = age >= 65
 
-    oral_nsaid = (
-        table("prescriptions")
-        .filter("processing_date", between=[three_months_previous, index_date])
-        .filter("prescribed_dmd_code", is_in=oral_nsaid_drugs_codelist )
-        .exists()
-    )
+        oral_nsaid = (
+            table("prescriptions")
+            .filter("processing_date", between=[three_months_previous, index_date])
+            .filter("prescribed_dmd_code", is_in=oral_nsaid_drugs_codelist )
+            .exists()
+        )
 
-    ppi = (
-        table("prescriptions")
-        .filter("processing_date", between=[three_months_previous, index_date])
-        .filter("prescribed_dmd_code", is_in=PLACEHOLDER_drugs_codelist)
-        .exists()
-    )
+        ppi = (
+            table("prescriptions")
+            .filter("processing_date", between=[three_months_previous, index_date])
+            .filter("prescribed_dmd_code", is_in=PLACEHOLDER_drugs_codelist)
+            .exists()
+        )
 
-    indicator_GIB01_risk_denominator = _age_65_plus and oral_nsaid
-    indicator_GIB01_risk_numerator = _age_65_plus and oral_nsaid and ppi
+        indicator_GIB01_risk_denominator = _age_65_plus and oral_nsaid
+        indicator_GIB01_risk_numerator = _age_65_plus and oral_nsaid and ppi
 
-    # GIB01 / admission indicator --------------------------------- #
-    # Patients 65 years or over admitted to hospital with a
-    # gastro-intestinal bleed and currently prescribed an NSAID and
-    # NOT concurrently prescribed a gastro-protective medicine.
+        # GIB01 / admission indicator --------------------------------- #
+        # Patients 65 years or over admitted to hospital with a
+        # gastro-intestinal bleed and currently prescribed an NSAID and
+        # NOT concurrently prescribed a gastro-protective medicine.
 
-    # NB all data in OpenSafely are completed spells so we do not
-    # need to request episodes that are completed.
+        # NB all data in OpenSafely are completed spells so we do not
+        # need to request episodes that are completed.
 
-    GIB_admission = (
-        table("hospital_admissions")
-        .filter("admission_date", between=[three_months_previous, index_date])
-        .filter("primary_diagnosis", is_in=PLACEHOLDER_admissions_codelist )
-        .filter(episode_is_finished=True)
-        .filter("admission_method", is_in=emergency_admission_codes)
-        .exists()
-    )
-    
-    indicator_GIB01_admission_numerator = _age_65_plus and GIB_admission and indicator_GIB01_risk_numerator
+        GIB_admission = (
+            table("hospital_admissions")
+            .filter("admission_date", between=[three_months_previous, index_date])
+            .filter("primary_diagnosis", is_in=PLACEHOLDER_admissions_codelist )
+            .filter(episode_is_finished=True)
+            .filter("admission_method", is_in=emergency_admission_codes)
+            .exists()
+        )
+        
+        indicator_GIB01_admission_numerator = _age_65_plus and GIB_admission and indicator_GIB01_risk_numerator
+
+    return Cohort
