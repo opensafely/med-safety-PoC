@@ -12,7 +12,7 @@ oral_nsaid_drugs_codelist = codelist_from_csv("codelists/pincer-nsaid.csv",
                                  column="id",)
 
 GIB_admissions_codelist = codelist_from_csv(
-    "codelists/user-milanwiedemann-gastro-intestinal-bleed-ind01to04.csv",
+    "codelists/nhsbsa-icd10-gastro-intestinal-bleed.csv",
     system="icd10",
     column="code" )
 
