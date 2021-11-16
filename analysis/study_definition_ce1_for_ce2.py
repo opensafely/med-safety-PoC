@@ -47,6 +47,7 @@ study = StudyDefinition(
     #         "int": {"distribution": "normal", "mean": 25, "stddev": 5}, "incidence": 0.5}
     # ),
 
+
     age=patients.age_as_of(
         "index_date",
         return_expectations={
@@ -55,11 +56,11 @@ study = StudyDefinition(
         },
     ),
 
-    _age_65_plus=patients.satisfying(
-        """
-        (age >=65)
-        """,
-    ),
+    # _age_65_plus=patients.satisfying(
+    #     """
+    #     (age >=65)
+    #     """,
+    # ),
 
     # sex=patients.sex(
     #     return_expectations={

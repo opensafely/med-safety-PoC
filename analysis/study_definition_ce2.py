@@ -49,7 +49,7 @@ def cohort(index_date):
 
     class Cohort:
         population = table("patients").exists()
-        dob = table("patients").first_by("patient_id").get("date_of_birth")
+        # dob = table("patients").first_by("patient_id").get("date_of_birth")
         age = table("patients").age_as_of(index_date)
 
         #################################################################
