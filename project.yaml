@@ -12,7 +12,7 @@ actions:
         cohort: analysis/dummy_data/input_*.csv
 
   generate_study_population_ce2:
-    run: cohortextractor-v2:latest generate_cohort --cohort-definition analysis/study_definition_ce2.py --output output/ce2/input_ce2_*.csv --dummy-data-file analysis/dummy_data/input_ce1_for_ce2_*.csv
+    run: cohortextractor-v2:latest generate_cohort --cohort-definition analysis/study_definition_ce2.py --output output/ce2/input_ce2_*.csv --dummy-data-file output/data_ce1_for_ce2_*.csv
     outputs:
       highly_sensitive:
         cohort: output/ce2/input_ce2_*.csv
