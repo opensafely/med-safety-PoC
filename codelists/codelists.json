@@ -23,6 +23,18 @@
       "url": "https://codelists.opensafely.org/codelist/nhsbsa/icd10-acute-kidney-injury/5591d698/",
       "downloaded_at": "2021-11-16 11:12:57.973834Z",
       "sha": "53bf97e2eb353e6cd8c949e9c7e3dfb5c2a7321a"
+    },
+    "nhsbsa-icd10-pain01-pain03-2372f02e.csv": {
+      "id": "nhsbsa/icd10-pain01-pain03/2372f02e/",
+      "url": "https://codelists.opensafely.org/codelist/nhsbsa/icd10-pain01-pain03/2372f02e//",
+      "downloaded_at": "2021-11-16 14:32:38.473277Z",
+      "sha": "b66f0800d814b713433340e96a4fc04b0c9aa71c"
+    },
+    "nhsbsa-icd10-pain02-715409c3.csv": {
+      "id": "nhsbsa/icd10-pain02/715409c3/",
+      "url": "https://codelists.opensafely.org/codelist/nhsbsa/icd10-pain02/715409c3//",
+      "downloaded_at": "2021-11-16 14:32:38.908754Z",
+      "sha": "b3a7e527318de43efdb76e374574769d5d5fb1bf"
     }
   }
 }
