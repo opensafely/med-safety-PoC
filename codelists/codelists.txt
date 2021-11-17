@@ -5,3 +5,8 @@ nhsbsa/icd10-acute-kidney-injury/5591d698
 nhsbsa/icd10-diagnosis-pain01-pain03/0d163cef/
 nhsbsa/icd10-cause-pain01-pain03/7406c9b9/
 nhsbsa/icd10-pain02/715409c3/
+nhsbsa/icd10-diagnosis-frac/41e7e34f
+nhsbsa/icd10-cause-frac-acb/5af75684 
+nhsbsa/icd10-respiratory/28d8701a
+nhsbsa/icd10-diagnosis-01-anticholinergic-burden/0fc8fce5
+nhsbsa/icd10-diagnosis-02-anticholinergic-burden/76b989af
