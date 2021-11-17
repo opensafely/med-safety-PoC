@@ -16,7 +16,7 @@ oral_nsaid_drugs_codelist = codelist_from_csv("codelists/pincer-nsaid.csv",
 #####################################################################
 
 ### ADMISSIONS -------------------------------------------------- ###
-PLACEHOLDER_admissions_codelist = covid_codelist = codelist(
+PLACEHOLDER_admissions_codelist = codelist(
     [ "K226", "K226", "K226", "K252", "K254", "K256", "K260", "K262", "K264", "K266" ],
     system="icd10")
 
