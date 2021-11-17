@@ -128,7 +128,8 @@ study = StudyDefinition(
     GIB_admission=patients.admitted_to_hospital(
         with_these_primary_diagnoses=PLACEHOLDER_admissions_codelist,
         with_admission_method=emergency_admission_codes,
-        returning="number_of_matches_in_period",
+        find_last_match_in_period=True,
+        returning="binary_flag",
         between=["index_date - 3 months", "index_date"],
         return_expectations={
             "incidence": 0.6,
@@ -139,7 +140,7 @@ study = StudyDefinition(
     indicator_GIB01_admission_numerator = patients.satisfying(
         """
         indicator_GIB01_risk_numerator AND
-        ( GIB_admission > 0 )
+        ( GIB_admission )
         """
     ),
 
