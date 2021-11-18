@@ -103,6 +103,16 @@ def cohort(index_date):
         indicator_GIB01_admission_numerator = GIB_admission and indicator_GIB01_risk_numerator
         indicator_GIB01_admission_denominator = indicator_GIB01_risk_numerator
 
+        practice_id = (
+            table("hospital_admissions")
+            .filter("admission_date", between=[three_months_previous, index_date])
+            .filter("primary_diagnosis", is_in=PLACEHOLDER_admissions_codelist)
+            .filter(episode_is_finished=True)
+            .filter("admission_method", is_in=emergency_admission_codes)
+            .count("patient_id")
+        )
+
+
         measures = []
 
     ### Identifying all indicators ================================ #
@@ -122,28 +132,28 @@ def cohort(index_date):
     indicator_df['name'] = indicator_df['v'].map(lambda x: re.sub("_(numerator|denominator)", "", x ))
     indicator_df['type'] = indicator_df.apply(lambda x: x['v'].replace(f"{x['name']}_", ''), axis=1)
 
-    print( f"Month {index_date}: creating indicator '{set(indicator_df.name)}'" )
-
     ### This loops through all indicators identified in the process above
     ### and creates the measure from the numerator and denominator
     ### which is (currently) grouped by practice.
     for this_indicator in set(indicator_df.name):
         this_numerator = ( indicator_df
                             .query( f"name == '{this_indicator}'" )
-                            .query( f"type == 'numerator'") ).v.str
+                            .query( f"type == 'numerator'") )['v'].item()
         this_denominator = ( indicator_df
                             .query( f"name == '{this_indicator}'" )
-                            .query( f"type == 'denominator'") ).v.str
+                             .query(f"type == 'denominator'"))['v'].item()
+
         this_rate = f"{this_indicator}_rate"
+
+        print(f"Adding measure {this_rate} [num={this_numerator},den={this_denominator}]")
 
         Cohort.measures.extend( [
             Measure(
                 id=this_rate,
                 numerator=this_numerator,
                 denominator=this_denominator,
-                group_by=["practice"],
+                group_by=["practice_id"],
             ),
         ]
     )
-
     return Cohort
