@@ -1,10 +1,9 @@
 from cohortextractor import table, cohort_date_range, Measure, codelist #, categorise
 from codelists import *
-# from utilities import add_months
+from utilities import add_months
 import re
 import pandas as pd
-import dateutil
-
+# import dateutil
 
 # Example study definitions for v2
 # https://github.com/opensafely/SRO-Measures/blob/v2/analysis/study_definition.py
@@ -27,12 +26,12 @@ import dateutil
 #                               - spell_id (integer)
 
 
-def add_months(date_in, delta_months):
-    index_date = pd.to_datetime(date_in)
-    month_delta = dateutil.relativedelta.relativedelta(months=delta_months)
-    new_date = index_date + month_delta
-    new_date_string = f"{new_date.year}-{str(new_date.month).zfill(2)}-{str(new_date.day).zfill(2)}"
-    return(new_date_string)
+# def add_months(date_in, delta_months):
+#     index_date = pd.to_datetime(date_in)
+#     month_delta = dateutil.relativedelta.relativedelta(months=delta_months)
+#     new_date = index_date + month_delta
+#     new_date_string = f"{new_date.year}-{str(new_date.month).zfill(2)}-{str(new_date.day).zfill(2)}"
+#     return(new_date_string)
 
 emergency_admission_codes = (
     "21",  # Emergency Admission: Emergency Care Department or dental casualty department of the Health Care Provider
@@ -56,7 +55,6 @@ index_date_range = cohort_date_range(
 
 def cohort(index_date):
     three_months_previous = add_months( index_date, -3 )
-
     class Cohort:
         population = table("patients").exists()
         # dob = table("patients").first_by("patient_id").get("date_of_birth")
