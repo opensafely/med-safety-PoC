@@ -1,12 +1,12 @@
 version: '3.0'
 
 expectations:
-  population_size: 500
+  population_size: 1000
 
 actions:
 
   generate_study_population_ce1:
-    run: cohortextractor:latest generate_cohort --study-definition study_definition_ce1_for_ce2 --index-date-range "2020-01-01 to 2020-03-01 by month"
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_ce1_for_ce2 --index-date-range "2020-01-01 to 2020-06-01 by month"
     outputs:
       highly_sensitive:
         cohort: output/ce1/input_*.csv
@@ -40,3 +40,11 @@ actions:
   #   outputs:
   #     moderately_sensitive:
   #       reports: output/ce1/cohort_reports_outputs/*.html
+
+    
+  generate_plots:
+    run: python:latest python analysis/plot_measures.py
+    needs: [generate_measures]
+    outputs:
+      moderately_sensitive:
+        counts: output/ce2/figures/plot_*.jpeg
