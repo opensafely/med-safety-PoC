@@ -1,8 +1,10 @@
 from cohortextractor import table, cohort_date_range, Measure, codelist #, categorise
 from codelists import *
-from utilities import add_months
+# from utilities import add_months
 import re
 import pandas as pd
+import dateutil
+
 
 # Example study definitions for v2
 # https://github.com/opensafely/SRO-Measures/blob/v2/analysis/study_definition.py
@@ -24,6 +26,14 @@ import pandas as pd
 #                               - episode_is_finished (boolean)
 #                               - spell_id (integer)
 
+
+def add_months(date_in, delta_months):
+    index_date = pd.to_datetime(date_in)
+    month_delta = dateutil.relativedelta.relativedelta(months=delta_months)
+    new_date = index_date + month_delta
+    new_date_string = f"{new_date.year}-{str(new_date.month).zfill(2)}-{str(new_date.day).zfill(2)}"
+    return(new_date_string)
+
 emergency_admission_codes = (
     "21",  # Emergency Admission: Emergency Care Department or dental casualty department of the Health Care Provider
     "22",  # Emergency Admission: GENERAL PRACTITIONER: after a request for immediate admission has been made direct to a Hospital Provider, i.e. not through a Bed bureau, by a GENERAL PRACTITIONER or deputy
@@ -41,7 +51,7 @@ emergency_admission_codes = (
 
 
 index_date_range = cohort_date_range(
-    start="2020-01-01", end="2020-03-01", increment="month"
+    start="2020-01-01", end="2020-12-01", increment="month"
 )
 
 def cohort(index_date):
