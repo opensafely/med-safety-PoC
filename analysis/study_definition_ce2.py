@@ -75,7 +75,7 @@ def cohort(index_date):
         ppi = (
             table("prescriptions")
             .filter("processing_date", between=[three_months_previous, index_date])
-            .filter("prescribed_dmd_code", is_in=PLACEHOLDER_drugs_codelist)
+            .filter("prescribed_dmd_code", is_in=ulcer_healing_drugs_codelist)
             .exists()
         )
 
@@ -93,7 +93,7 @@ def cohort(index_date):
         GIB_admission = (
             table("hospital_admissions")
             .filter("admission_date", between=[three_months_previous, index_date])
-            .filter("primary_diagnosis", is_in=PLACEHOLDER_admissions_codelist )
+            .filter("primary_diagnosis", is_in=gib_admissions_codelist )
             .filter(episode_is_finished=True)
             .filter("admission_method", is_in=emergency_admission_codes)
             .exists()
@@ -105,7 +105,7 @@ def cohort(index_date):
         practice_id = (
             table("hospital_admissions")
             .filter("admission_date", between=[three_months_previous, index_date])
-            .filter("primary_diagnosis", is_in=PLACEHOLDER_admissions_codelist)
+            .filter("primary_diagnosis", is_in=gib_admissions_codelist)
             .filter(episode_is_finished=True)
             .filter("admission_method", is_in=emergency_admission_codes)
             .count("patient_id")
