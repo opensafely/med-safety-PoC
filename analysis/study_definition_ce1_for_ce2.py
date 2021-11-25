@@ -3,7 +3,7 @@ from cohortextractor import StudyDefinition, patients, codelist, codelist_from_c
 from codelists import *
 
 start_date = "2020-01-01"
-end_date = "2020-03-01"
+end_date = "2020-12-01"
 
 
 emergency_admission_codes = [
@@ -151,16 +151,16 @@ study = StudyDefinition(
         """
     ),
 
-    practice_id=patients.admitted_to_hospital(
-        with_these_primary_diagnoses=gib_admissions_codelist,
-        with_admission_method=emergency_admission_codes,
-        returning="number_of_matches_in_period",
-        between=["index_date - 3 months", "index_date"],
-        return_expectations={
-            "incidence": 1.0,
-            "int": {"distribution": "normal", "mean": 8, "stddev": 3},
-        },
-    ),
+    # practice_id=patients.admitted_to_hospital(
+    #     with_these_primary_diagnoses=GIB_admissions_codelist,
+    #     with_admission_method=emergency_admission_codes,
+    #     returning="number_of_matches_in_period",
+    #     between=["index_date - 3 months", "index_date"],
+    #     return_expectations={
+    #         "incidence": 1.0,
+    #         "int": {"distribution": "normal", "mean": 20, "stddev": 5},
+    #     },
+    # ),
 
 
     # # AKI01 ======================================================= #

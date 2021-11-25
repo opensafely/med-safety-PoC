@@ -1,6 +1,6 @@
 from cohortextractor import table, cohort_date_range, Measure, codelist #, categorise
 from codelists import *
-from utilities import add_months
+from utils import add_months
 import re
 import pandas as pd
 
@@ -24,6 +24,7 @@ import pandas as pd
 #                               - episode_is_finished (boolean)
 #                               - spell_id (integer)
 
+
 emergency_admission_codes = (
     "21",  # Emergency Admission: Emergency Care Department or dental casualty department of the Health Care Provider
     "22",  # Emergency Admission: GENERAL PRACTITIONER: after a request for immediate admission has been made direct to a Hospital Provider, i.e. not through a Bed bureau, by a GENERAL PRACTITIONER or deputy
@@ -39,14 +40,12 @@ emergency_admission_codes = (
            # - baby born at home as intended
 )
 
-
 index_date_range = cohort_date_range(
-    start="2020-01-01", end="2020-03-01", increment="month"
+    start="2020-01-01", end="2020-12-01", increment="month"
 )
 
 def cohort(index_date):
     three_months_previous = add_months( index_date, -3 )
-
     class Cohort:
         population = table("patients").exists()
         # dob = table("patients").first_by("patient_id").get("date_of_birth")
