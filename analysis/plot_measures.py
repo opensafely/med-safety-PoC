@@ -1,4 +1,5 @@
-from matplotlib_utils import *
+from plot_deciles import *
+from comp_deciles import *
 import pandas as pd
 import os
 import numpy as np
