@@ -20,7 +20,6 @@ actions:
 
   generate_study_population_ce2:
     run: cohortextractor-v2:latest generate_cohort --cohort-definition analysis/study_definition_ce2.py --output output/ce2/input_ce2_*.csv --dummy-data-file output/ce1/input_expanded_ce1_for_ce2_*.csv
-    needs: [add_practice_ids]
     outputs:
       highly_sensitive:
         cohort: output/ce2/input_ce2_*.csv
