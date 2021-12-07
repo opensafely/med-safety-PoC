@@ -30,7 +30,7 @@ actions:
     needs: [generate_study_population_ce2]
     outputs:
       moderately_sensitive:
-        cohort: output/ce2/input_expanded_*.csv
+        cohort: output/ce2/input_expanded_ce2_*.csv
 
 
   generate_measures:

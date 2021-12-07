@@ -10,4 +10,5 @@ for file in OUTPUT_DIR.iterdir():
         df = pd.read_csv(OUTPUT_DIR / file.name)
         df['practice_id'] = np.random.uniform(low=1, high=50, size=df.shape[0]).astype(int)
         new_file = file.name.replace("input","input_expanded")
+        print(f"Adding practice ID to {file.name}, writing to: {new_file}")
         df.to_csv(OUTPUT_DIR / f"{new_file}", index=False)
