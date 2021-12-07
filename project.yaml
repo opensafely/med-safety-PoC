@@ -34,7 +34,7 @@ actions:
 
 
   generate_measures:
-    run: cohortextractor-v2:latest generate_measures --cohort-definition analysis/study_definition_ce2.py --output output/ce2/measure_ce2_*.csv --input=output/ce2/input_ce2_*.csv
+    run: cohortextractor-v2:latest generate_measures --cohort-definition analysis/study_definition_ce2.py --output output/ce2/measure_ce2_*.csv --input=output/ce2/input_expanded_*.csv
     needs: [add_practice_ids]
     outputs:
         moderately_sensitive:
