@@ -6,14 +6,14 @@ expectations:
 actions:
 
   generate_study_population_ce2:
-    run: cohortextractor-v2:latest generate_cohort --cohort-definition analysis/study_definition_ce2.py --output output/ce2/input_ce2_*.csv --dummy-data-file output/ce1/input_expanded_ce1_for_ce2_*.csv
+    run: databuilder:latest generate_cohort --cohort-definition analysis/study_definition_ce2.py --output output/ce2/input_ce2_*.csv --dummy-data-file output/ce1/input_expanded_ce1_for_ce2_*.csv
     outputs:
       highly_sensitive:
         cohort: output/ce2/input_ce2_*.csv
 
 
   validate_cohort_v2:
-    run: cohortextractor-v2:latest validate_cohort databricks --cohort-definition analysis/study_definition_ce2.py --output output/ce2/sql/generated_sql_*.sql
+    run: databuilder:latest validate_cohort databricks --cohort-definition analysis/study_definition_ce2.py --output output/ce2/sql/generated_sql_*.sql
     outputs:
       moderately_sensitive:
         cohort: output/ce2/sql/generated_sql_*.sql
@@ -28,7 +28,7 @@ actions:
 
 
   generate_measures:
-    run: cohortextractor-v2:latest generate_measures --cohort-definition analysis/study_definition_ce2.py --output output/ce2/measure_ce2_*.csv --input output/ce2/input_expanded_ce2_*.csv
+    run: databuilder:latest generate_measures --cohort-definition analysis/study_definition_ce2.py --output output/ce2/measure_ce2_*.csv --input output/ce2/input_expanded_ce2_*.csv
     needs: [add_practice_ids]
     outputs:
         moderately_sensitive:
