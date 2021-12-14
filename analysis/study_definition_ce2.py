@@ -10,10 +10,10 @@ import pandas as pd
 # https://github.com/opensafely/long-covid/blob/simplified-for-ce2/analysis/study_definition_cohort_v2.py
 # --> TPP backend example
 
-# https://github.com/opensafely-core/cohort-extractor-v2/blob/18a92af5fbf5ccc31725279cb087788fa2c98209/tests/backends/test_databricks.py#L87-L94
+# https://github.com/opensafely-core/databuilder/blob/18a92af5fbf5ccc31725279cb087788fa2c98209/tests/backends/test_databricks.py#L87-L94
 # --> testing for databricks backend (includes prescription query)
 
-# https://github.com/opensafely-core/cohort-extractor-v2/blob/main/cohortextractor/backends/databricks.py
+# https://github.com/opensafely-core/databuilder/blob/main/databuilder/backends/databricks.py
 # table( "patients"      ) - date_of_birth (date)
 # table( "prescriptions" ) - patient_id (integer)
 #                          - prescribed_dmd_code (dmd)
