@@ -1,4 +1,4 @@
-from cohortextractor import (
+from databuilder import (
     codelist_from_csv,
     codelist
 )

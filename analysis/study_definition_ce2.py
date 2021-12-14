@@ -1,4 +1,4 @@
-from cohortextractor import table, cohort_date_range, Measure, codelist #, categorise
+from databuilder import table, cohort_date_range, Measure, codelist #, categorise
 from codelists import *
 from utils import add_months
 import re
