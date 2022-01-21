@@ -5,11 +5,11 @@ expectations:
 
 actions:
 
-  # generate_study_population_ce1:
-  #   run: cohortextractor:latest generate_cohort --study-definition study_definition_ce1_for_ce2 --index-date-range "2020-01-01 to 2020-12-01 by month"
-  #   outputs:
-  #     highly_sensitive:
-  #       cohort: output/ce1/input_ce1_for_ce2_*.csv
+  generate_study_population_ce1:
+    run: cohortextractor:latest generate_cohort --study-definition study_definition_ce1_for_ce2 --index-date-range "2020-01-01 to 2020-12-01 by month"
+    outputs:
+      highly_sensitive:
+        cohort: output/ce1/input_ce1_for_ce2_*.csv
 
   generate_study_population_ce2:
     run: cohortextractor-v2:latest generate_cohort --cohort-definition analysis/study_definition_ce2.py --output output/ce2/input_ce2_*.csv --dummy-data-file output/ce1/input_expanded_ce1_for_ce2_*.csv
