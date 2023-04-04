@@ -40,8 +40,9 @@ emergency_admission_codes = (
            # - baby born at home as intended
 )
 
+# currently only have access to FY 2019-2020 data at the minute
 index_date_range = cohort_date_range(
-    start="2020-01-01", end="2020-12-01", increment="month"
+    start="2019-05-01", end="2020-04-01", increment="month"
 )
 
 def cohort(index_date):
